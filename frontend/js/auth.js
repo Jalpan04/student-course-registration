@@ -2,17 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
 
-  // DOM Elements
   const alertBox = loginForm ? document.getElementById('loginAlert') : document.getElementById('registerAlert');
 
-  // Utilities
   function showAlert(msg, type = 'danger') {
     if (!alertBox) return;
     alertBox.textContent = msg;
     alertBox.className = `alert alert-${type}`;
     alertBox.classList.remove('hidden');
-    
-    // Auto hide after 5 seconds
+
     setTimeout(() => {
       alertBox.classList.add('hidden');
     }, 5000);
@@ -30,9 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.error-input').forEach(el => el.classList.remove('error-input'));
   }
 
-  // --- Login Logic ---
   if (loginForm) {
-    // If already logged in, redirect
+
     if (localStorage.getItem('token')) {
       window.location.href = 'dashboard.html';
     }
@@ -60,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('token', response.token);
         localStorage.setItem('student', JSON.stringify(response.student));
         showAlert('Login successful! Redirecting...', 'success');
-        
+
         setTimeout(() => {
           window.location.href = 'dashboard.html';
         }, 1000);
@@ -73,9 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Registration Logic ---
   if (registerForm) {
-    // If already logged in, redirect
+
     if (localStorage.getItem('token')) {
       window.location.href = 'dashboard.html';
     }
@@ -90,12 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const confirmPassword = document.getElementById('confirmPassword').value;
 
       let isValid = true;
-      
+
       if (!name || name.length < 3) {
         showError('name', 'Name must be at least 3 characters');
         isValid = false;
       }
-      
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!email || !emailRegex.test(email)) {
         showError('email', 'Please enter a valid email address');
@@ -122,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const response = await API.auth.register({ name, email, password });
         showAlert('Registration successful! Redirecting to login...', 'success');
-        
+
         setTimeout(() => {
           window.location.href = 'index.html';
         }, 1500);

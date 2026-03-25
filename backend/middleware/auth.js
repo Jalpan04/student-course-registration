@@ -8,7 +8,7 @@ module.exports = function (req, res, next) {
   }
 
   try {
-    const bearer = token.split(' ')[1]; // Format: "Bearer token"
+    const bearer = token.split(' ')[1]; 
     const decoded = jwt.verify(bearer || token, process.env.JWT_SECRET);
     req.student = decoded.student;
     next();

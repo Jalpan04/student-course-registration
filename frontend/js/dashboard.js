@@ -1,23 +1,29 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  // Authentication Check
+
   const token = localStorage.getItem('token');
   const studentData = localStorage.getItem('student');
-  
+
   if (!token || !studentData) {
     window.location.href = 'index.html';
     return;
   }
 
   const student = JSON.parse(studentData);
-  document.getElementById('studentNameDisplay').textContent = student.name;
 
-  // DOM Elements
+  const hour = new Date().getHours();
+  let greeting = "Hello";
+  if (hour < 12) greeting = "Good Morning";
+  else if (hour < 17) greeting = "Good Afternoon";
+  else if (hour < 21) greeting = "Good Evening";
+  else greeting = "Good Night";
+
+  document.getElementById('studentNameDisplay').textContent = `${greeting}, ${student.name}`;
+
   const alertBox = document.getElementById('dashboardAlert');
   const coursesGrid = document.getElementById('coursesGrid');
   const enrollmentsTableBody = document.getElementById('enrollmentsTableBody');
   const logoutBtn = document.getElementById('logoutBtn');
 
-  // State
   let enrolledCourseIds = new Set();
 
   function showAlert(msg, type = 'success') {
@@ -27,7 +33,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTimeout(() => alertBox.classList.add('hidden'), 5000);
   }
 
-  // Logout
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('token');
     localStorage.removeItem('student');
@@ -43,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     coursesGrid.innerHTML = courses.map(course => {
       const isEnrolled = enrolledCourseIds.has(course._id);
       const isFull = course.enrolled >= course.capacity;
-      
+
       let btnHtml = '';
       if (isEnrolled) {
         btnHtml = `<button class="btn btn-outline btn-block" disabled>Enrolled</button>`;
@@ -80,7 +85,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       `;
     }).join('');
 
-    // Attach listeners to new buttons
     document.querySelectorAll('.enroll-btn').forEach(btn => {
       btn.addEventListener('click', handleEnrollment);
     });
@@ -111,15 +115,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btn = e.target;
     const courseId = btn.getAttribute('data-id');
     const originalText = btn.textContent;
-    
+
     btn.textContent = 'Enrolling...';
     btn.disabled = true;
 
     try {
       await API.enrollments.enroll(courseId);
       showAlert('Successfully enrolled in the course!', 'success');
-      
-      // Refresh both lists to ensure consistency
+
       await loadDashboardData();
     } catch (err) {
       showAlert(err.message, 'danger');
@@ -130,13 +133,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function loadDashboardData() {
     try {
-      // Fetch concurrently
+
       const [courses, enrollments] = await Promise.all([
         API.courses.getAll(),
         API.enrollments.getAll()
       ]);
 
-      // Map enrolled IDs for easy lookup
       enrolledCourseIds = new Set(enrollments.map(e => e.course._id));
 
       renderEnrollments(enrollments);
@@ -152,6 +154,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Initialize
   loadDashboardData();
 });

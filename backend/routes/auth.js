@@ -4,9 +4,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Student = require('../models/Student');
 
-// @route   POST api/auth/register
-// @desc    Register a student
-// @access  Public
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -46,13 +43,10 @@ router.post('/register', async (req, res) => {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ msg: 'Server Error' });
   }
 });
 
-// @route   POST api/auth/login
-// @desc    Authenticate student & get token
-// @access  Public
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -87,7 +81,7 @@ router.post('/login', async (req, res) => {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ msg: 'Server Error' });
   }
 });
 

@@ -3,44 +3,704 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Login | Course Registration System</title>
-  <meta name="description" content="Login to the student course registration system.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <title>CourseKaro - Learn What Matters</title>
+  <meta name="description" content="CourseKaro is the smartest way for college students to browse, enroll, and manage their courses online.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-teal:      #1a535c;
+      --strong-cyan:    #4ecdc4;
+      --mint-cream:     #f7fff7;
+      --grapefruit-pink:#ff6b6b;
+      --royal-gold:     #ffe66d;
+      --white:          #ffffff;
+      --text-muted:     #4a6d72;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-brand: 'Outfit', sans-serif;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--white);
+      color: var(--dark-teal);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 72px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid rgba(78,205,196,0.2);
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-family: var(--font-brand);
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--dark-teal);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .brand-dot {
+      width: 10px; height: 10px;
+      background: var(--royal-gold);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 1.5rem; }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: .95rem;
+      transition: color .2s;
+    }
+    .nav-link:hover { color: var(--dark-teal); }
+
+    .btn-nav {
+      background: var(--royal-gold);
+      color: var(--dark-teal);
+      font-family: var(--font-brand);
+      font-weight: 800;
+      padding: .55rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: .95rem;
+      transition: all .3s;
+      box-shadow: 0 4px 12px rgba(255,230,109,.4);
+    }
+    .btn-nav:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255,230,109,.5);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 7rem 2rem 4rem;
+
+      background: linear-gradient(135deg,
+        #e0f5f3 0%,
+        var(--mint-cream) 35%,
+        #fff9d4 70%,
+        #fff 100%
+      );
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(78,205,196,.3), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,230,109,.35), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(255,107,107,.1);
+      color: var(--grapefruit-pink);
+      border: 1.5px solid rgba(255,107,107,.3);
+      padding: .4rem 1rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: .85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badge-dot {
+      width: 7px; height: 7px;
+      background: var(--grapefruit-pink);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-family: var(--font-brand);
+      font-size: 4rem;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--dark-teal);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 .highlight {
+      color: var(--grapefruit-pink);
+      position: relative;
+    }
+
+    .hero h1 .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0; right: 0;
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--grapefruit-pink), var(--royal-gold));
+      opacity: .5;
+    }
+
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 520px;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+    .btn-hero {
+      font-family: var(--font-brand);
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 1rem 2.25rem;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all .3s cubic-bezier(.25,1,.5,1);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-hero-primary {
+      background: var(--royal-gold);
+      color: var(--dark-teal);
+      box-shadow: 0 6px 20px rgba(255,230,109,.5);
+    }
+    .btn-hero-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(255,230,109,.55);
+    }
+
+    .btn-hero-outline {
+      background: transparent;
+      color: var(--dark-teal);
+      border: 2px solid var(--dark-teal);
+    }
+    .btn-hero-outline:hover {
+      background: var(--dark-teal);
+      color: var(--white);
+      transform: translateY(-4px);
+    }
+
+    .hero-visual {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 24px 60px rgba(26,83,92,0.14);
+      border: 2px solid rgba(78,205,196,.2);
+      position: relative;
+    }
+
+    .hero-visual-header {
+      background: var(--dark-teal);
+      border-radius: 14px 14px 0 0;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: -2rem -2rem 1.5rem -2rem;
+      border-radius: 22px 22px 0 0;
+    }
+
+    .hero-visual-header span {
+      font-family: var(--font-brand);
+      font-weight: 800;
+      color: var(--white);
+      font-size: 1.05rem;
+    }
+
+    .hero-visual-header .badge {
+      background: var(--royal-gold);
+      color: var(--dark-teal);
+      font-weight: 800;
+      font-size: .8rem;
+      padding: .25rem .75rem;
+      border-radius: 50px;
+    }
+
+    .mock-course {
+      background: var(--mint-cream);
+      border: 1.5px solid rgba(78,205,196,.3);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: transform .2s;
+    }
+    .mock-course:hover { transform: translateX(6px); }
+
+    .mock-course-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .mock-course-info { flex: 1; }
+    .mock-course-title { font-weight: 700; color: var(--dark-teal); font-size: .95rem; }
+    .mock-course-sub { font-size: .8rem; color: var(--text-muted); margin-top: .2rem; }
+
+    .mock-tag {
+      font-size: .75rem;
+      font-weight: 700;
+      padding: .25rem .75rem;
+      border-radius: 50px;
+    }
+
+    .stats {
+      background: var(--dark-teal);
+      padding: 4rem 2rem;
+    }
+
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat-item {}
+
+    .stat-number {
+      font-family: var(--font-brand);
+      font-size: 3rem;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: .5rem;
+    }
+
+    .stat-label {
+      color: rgba(255,255,255,.65);
+      font-size: .95rem;
+      font-weight: 600;
+    }
+
+    .stat-item:nth-child(1) .stat-number { color: var(--royal-gold); }
+    .stat-item:nth-child(2) .stat-number { color: var(--strong-cyan); }
+    .stat-item:nth-child(3) .stat-number { color: var(--grapefruit-pink); }
+    .stat-item:nth-child(4) .stat-number { color: var(--royal-gold); }
+
+    .features {
+      padding: 6rem 2rem;
+      background: var(--white);
+    }
+
+    .section-label {
+      text-align: center;
+      font-weight: 700;
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--strong-cyan);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-brand);
+      font-size: 2.75rem;
+      font-weight: 900;
+      text-align: center;
+      color: var(--dark-teal);
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto 4rem;
+    }
+
+    .features-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .feature-card {
+      border: 2px solid #eaf0ef;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      transition: all .35s;
+      background: var(--white);
+    }
+    .feature-card:hover {
+      border-color: var(--strong-cyan);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px rgba(78,205,196,.12);
+    }
+
+    .feature-icon {
+      width: 60px; height: 60px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: .75rem;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .cta-banner {
+      margin: 0 2rem 6rem;
+      background: linear-gradient(135deg, var(--dark-teal) 0%, #0f3940 100%);
+      border-radius: 28px;
+      padding: 5rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(78,205,196,.25), transparent 70%);
+      border-radius: 50%;
+    }
+
+    .cta-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(255,230,109,.2), transparent 70%);
+      border-radius: 50%;
+    }
+
+    .cta-banner h2 {
+      font-family: var(--font-brand);
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-banner p {
+      color: rgba(255,255,255,.7);
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-banner .cta-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-cta-main {
+      font-family: var(--font-brand);
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 1rem 2.5rem;
+      border-radius: 12px;
+      text-decoration: none;
+      background: var(--royal-gold);
+      color: var(--dark-teal);
+      box-shadow: 0 6px 20px rgba(255,230,109,.4);
+      transition: all .3s;
+    }
+    .btn-cta-main:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(255,230,109,.5); }
+
+    .btn-cta-outline {
+      font-family: var(--font-brand);
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 1rem 2.5rem;
+      border-radius: 12px;
+      text-decoration: none;
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,.4);
+      transition: all .3s;
+    }
+    .btn-cta-outline:hover { background: rgba(255,255,255,.1); border-color: var(--white); transform: translateY(-3px); }
+
+    .footer {
+      background: #0d3238;
+      color: rgba(255,255,255,.7);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .footer-brand {
+      font-family: var(--font-brand);
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: .5rem;
+    }
+
+    .footer-brand span { color: var(--royal-gold); }
+
+    .footer-copy { font-size: .9rem; }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .hero h1 { font-size: 2.8rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { gap: .75rem; }
+      .hero h1 { font-size: 2.2rem; }
+      .cta-banner { padding: 3rem 1.5rem; }
+      .cta-banner h2 { font-size: 2rem; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <div class="auth-container">
-    <div class="auth-card">
-      <div class="auth-header">
-        <h1>Welcome Back</h1>
-        <p>Login to access your courses</p>
-      </div>
-      
-      <div id="loginAlert" class="alert hidden"></div>
 
-      <form id="loginForm" class="auth-form" novalidate>
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="student@college.edu" autocomplete="email">
-          <span class="error-message" id="emailError"></span>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="landing.html" class="brand">
+        CourseKaro<span class="brand-dot"></span>
+      </a>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="login.html" class="nav-link">Log In</a>
+        <a href="register.html" class="btn-nav">Get Started Free</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-inner">
+
+      <div class="hero-copy">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Now live for students
         </div>
-        
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password">
-          <span class="error-message" id="passwordError"></span>
+        <h1>Your College<br>Courses,<br><span class="highlight">Simplified.</span></h1>
+        <p class="hero-sub">
+          CourseKaro lets you browse every available course, enroll in seconds, and track your schedule - all from one sleek dashboard.
+        </p>
+        <div class="hero-actions">
+          <a href="register.html" class="btn-hero btn-hero-primary">Start Enrolling</a>
+          <a href="login.html" class="btn-hero btn-hero-outline">Log In</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-visual-header">
+          <span>Available Courses</span>
+          <div class="badge">8 Courses Open</div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Log In</button>
-      </form>
-      
-      <div class="auth-footer">
-        <p>Don't have an account? <a href="register.html">Register here</a></p>
+        <div class="mock-course">
+          <div class="mock-course-icon" style="background:rgba(78,205,196,.15);">
+            <span>💻</span>
+          </div>
+          <div class="mock-course-info">
+            <div class="mock-course-title">Intro to Web Development</div>
+            <div class="mock-course-sub">Dr. Sarah Johnson &bull; 3 Credits</div>
+          </div>
+          <span class="mock-tag" style="background:rgba(78,205,196,.15);color:var(--dark-teal);">Open</span>
+        </div>
+
+        <div class="mock-course">
+          <div class="mock-course-icon" style="background:rgba(255,230,109,.2);">
+            <span>🧠</span>
+          </div>
+          <div class="mock-course-info">
+            <div class="mock-course-title">Machine Learning Basics</div>
+            <div class="mock-course-sub">Dr. Alan Turing &bull; 4 Credits</div>
+          </div>
+          <span class="mock-tag" style="background:rgba(255,230,109,.25);color:#7a6200;">Open</span>
+        </div>
+
+        <div class="mock-course">
+          <div class="mock-course-icon" style="background:rgba(255,107,107,.12);">
+            <span>🔐</span>
+          </div>
+          <div class="mock-course-info">
+            <div class="mock-course-title">Cybersecurity Fundamentals</div>
+            <div class="mock-course-sub">Alex Mercer &bull; 3 Credits</div>
+          </div>
+          <span class="mock-tag" style="background:rgba(255,107,107,.1);color:var(--grapefruit-pink);">3 Left</span>
+        </div>
+
+        <div style="text-align:center; padding:.75rem 0 .25rem; color:var(--text-muted); font-size:.9rem; font-weight:600;">
+          + 5 more courses available
+        </div>
       </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="stat-number">8+</div>
+        <div class="stat-label">Courses Available</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Online Enrollment</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Paperwork Required</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Always Available</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <p class="section-label">Why CourseKaro?</p>
+    <h2 class="section-title">Everything You Need to Register</h2>
+    <p class="section-sub">Built for students who want simplicity, speed, and clarity in managing their academic journey.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(78,205,196,.15);">
+          <span>🎓</span>
+        </div>
+        <h3>Browse & Enroll Instantly</h3>
+        <p>See all available courses with full details - instructor, credits, schedule, and remaining seats. Enroll in one click, no forms, no queues.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(255,230,109,.2);">
+          <span>🔒</span>
+        </div>
+        <h3>Secure Student Accounts</h3>
+        <p>Your data is protected with JWT-based authentication and bcrypt password hashing. Your academic information stays yours alone.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(255,107,107,.1);">
+          <span>📋</span>
+        </div>
+        <h3>My Enrollments Dashboard</h3>
+        <p>Track every course you have enrolled in from a clean, organized table. Know your credits, schedule, and instructors at a glance.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(26,83,92,.1);">
+          <span>📱</span>
+        </div>
+        <h3>Fully Responsive Design</h3>
+        <p>Use CourseKaro on any device. Whether you are on a laptop in the library or a phone on the bus, the experience is equally smooth.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(78,205,196,.15);">
+          <span>⚡</span>
+        </div>
+        <h3>Real-Time Updates</h3>
+        <p>Enrollment status updates immediately on the page without any reloads. Enroll in a course and see it instantly reflect in your dashboard.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(255,230,109,.2);">
+          <span>🚫</span>
+        </div>
+        <h3>Smart Conflict Prevention</h3>
+        <p>Already enrolled? The system detects duplicate enrollments and prevents them automatically, keeping your schedule clean and accurate.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <h2>Ready to Take Control<br>of Your Courses?</h2>
+    <p>Join hundreds of students managing their academics the smart way with CourseKaro.</p>
+    <div class="cta-actions">
+      <a href="register.html" class="btn-cta-main">Create Your Account</a>
+      <a href="login.html" class="btn-cta-outline">Already Registered? Log In</a>
     </div>
   </div>
 
-  <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
+  <footer class="footer">
+    <div class="footer-brand">Course<span>Karo</span></div>
+    <p class="footer-copy">Built for students, by students. &copy; 2025 CourseKaro. All rights reserved.</p>
+  </footer>
+
 </body>
 </html>

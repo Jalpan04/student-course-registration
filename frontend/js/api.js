@@ -1,11 +1,8 @@
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'http://127.0.0.1:5000/api';
 
-/**
- * Utility function to handle Fetch API requests with built-in JSON parsing and error throwing.
- */
 async function fetchApi(endpoint, options = {}) {
   const url = `${BASE_URL}${endpoint}`;
-  
+
   const headers = {
     'Content-Type': 'application/json',
     ...options.headers,
@@ -34,9 +31,6 @@ async function fetchApi(endpoint, options = {}) {
   }
 }
 
-/**
- * Makes a fetch request attaching the JWT token from localStorage
- */
 async function authFetch(endpoint, options = {}) {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -51,7 +45,6 @@ async function authFetch(endpoint, options = {}) {
   return fetchApi(endpoint, { ...options, headers });
 }
 
-// Global API Object
 const API = {
   auth: {
     register: (userData) => fetchApi('/auth/register', { method: 'POST', body: userData }),
