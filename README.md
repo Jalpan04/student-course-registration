@@ -86,3 +86,7 @@ You can seed initial courses via Postman or cURL by making a POST request to `ht
   "capacity": 30
 }
 ```
+
+## License
+
+This project is licensed under the Unlicense License - see the [LICENSE](LICENSE) file for details.
