@@ -1,5 +1,7 @@
 # Student Course Registration Web Application
 
+![GitHub top language](https://img.shields.io/github/languages/top/Jalpan04/student-course-registration) ![GitHub repo size](https://img.shields.io/github/repo-size/Jalpan04/student-course-registration) [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](LICENSE)
+
 A full-stack web application allowing students to register, log in, view available courses, and enroll in them online.
 
 ## Output Links
